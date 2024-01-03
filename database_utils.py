@@ -29,10 +29,9 @@ class DatabaseConnector:
         return inspector.get_table_names()
     
     def upload_to_db(self, clean_data_df, df_name):
-        pass
         HOST = 'localhost'
         USER = 'postgres'
-        PASSWORD = 'Fender121'
+        PASSWORD = 'Test123'
         DATABASE = 'sales_data'
         PORT = 5432
         engine = create_engine(f"postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DATABASE}")
@@ -41,6 +40,7 @@ class DatabaseConnector:
 database_connector = DatabaseConnector()
 data_extractor = DataExctractor()
 data_cleaner = DataCleaning()
+
 
 def user_data():
     #connects with aws rds tables, extracts user data as pd df, cleans and uploads
@@ -57,7 +57,7 @@ def card_data():
 def store_data():
     #uses API to extract total number of stores, then concats dfs of each store, cleans and uploads
     num_stores = data_extractor.list_number_of_stores(api_info.num_stores, api_info.header)
-    store_details_df = data_extractor.retrieve_stores_data(api_info.store_info, api_info.header)
+    store_details_df = data_extractor.retrieve_stores_data(api_info.store_info, num_stores, api_info.header)
     clean_store_df = data_cleaner.clean_store_data(store_details_df)
     database_connector.upload_to_db(clean_store_df, 'dim_store_details')
 
@@ -72,6 +72,9 @@ def order_details():
     clean_aws_order_df = data_cleaner.clean_orders_data(aws_rds_order_table)
     database_connector.upload_to_db(clean_aws_order_df, 'orders_table')
 
-sales_date_df = data_extractor.extract_sale_details('https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json')
-clean_sales_date_df = data_cleaner.clean_date_details(sales_date_df)
-database_connector.upload_to_db(clean_sales_date_df, 'dim_date_times')
+def dim_date_times():
+    sales_date_df = data_extractor.extract_sale_details('https://data-handling-public.s3.eu-west-1.amazonaws.com/date_details.json')
+    clean_sales_date_df = data_cleaner.clean_date_details(sales_date_df)
+    database_connector.upload_to_db(clean_sales_date_df, 'dim_date_times')
+
+

@@ -48,12 +48,13 @@ class DataExctractor:
     #uses boto3 to download csv file from s3 bucket, then converts to pd df
     def extract_from_s3(self, link):
         s3 = boto3.client('s3')
-        s3.download_file('data-handling-public', 'products.csv', '/Users/Alex/MULTINATIONAL_RETAIL_DATA_CENTRALISATION/products.csv')
+        s3.download_file('data-handling-public', 'products.csv', '/Users/alexsweet/Library/Mobile Documents/com~apple~CloudDocs/Documents/multinational_retail_data_centralisation/products.csv')
         product_df = pd.read_csv('products.csv')
         return product_df
     
     def extract_sale_details(self, link):
         s3 = boto3.client('s3')
-        s3.download_file('data-handling-public', 'date_details.json', '/Users/Alex/MULTINATIONAL_RETAIL_DATA_CENTRALISATION/date_details.json')
+        s3.download_file('data-handling-public', 'date_details.json', '/Users/alexsweet/Library/Mobile Documents/com~apple~CloudDocs/Documents/multinational_retail_data_centralisation/date_details.json')
         product_df = pd.read_json('date_details.json')
         return product_df
+

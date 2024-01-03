@@ -12,6 +12,7 @@ class DataCleaning:
         data['date_of_birth'] = pd.to_datetime(data['date_of_birth'])
         data['join_date'] = data['join_date'].apply(self.parse_date)
         data['join_date'] = pd.to_datetime(data['join_date'])
+        data = data.drop(data.columns[[0]], axis=1)
         return data
     
     def clean_card_data(self, data):
@@ -23,6 +24,7 @@ class DataCleaning:
     def clean_store_data(self, data):
         data['opening_date'] = data['opening_date'].apply(self.parse_date)
         data['opening_date'] = pd.to_datetime(data['opening_date'])
+        data = data.drop(data.columns[[0]], axis=1)
         return data
     
     def convert_product_weights(self, weight):
@@ -52,6 +54,7 @@ class DataCleaning:
         data['weight'] = data['weight'].apply(self.convert_product_weights)
         data['weight'].fillna(0, inplace=True)
         data = data.dropna()
+        data = data.drop('Unnamed: 0', axis=1)
         return data
     
     def clean_orders_data(self, data):
